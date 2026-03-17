@@ -1,0 +1,29 @@
+{
+  "name": "disease-surveillance-dashboard",
+  "version": "1.0.0",
+  "description": "Web-based intelligent dashboard that ingests data from 9+ public health sources and returns a unified, contextualized surveillance view for any disease or region query.",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js"
+  },
+  "keywords": [
+    "disease",
+    "surveillance",
+    "dashboard",
+    "public-health"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.0",
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "csv-parse": "^5.5.0",
+    "express": "^4.18.2",
+    "node-cache": "^5.1.2",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

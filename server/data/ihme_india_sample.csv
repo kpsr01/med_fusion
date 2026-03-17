@@ -1,0 +1,89 @@
+cause_name,year,measure_name,metric_name,sex_name,age_name,location_name,val,upper,lower
+Malaria,2019,Deaths,Number,Both,All ages,India,15394,22106,10245
+Malaria,2019,Incidence,Rate,Both,All ages,India,627.4,1023.8,372.1
+Malaria,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,1048723,1523687,654321
+Malaria,2019,Prevalence,Number,Both,All ages,India,6354210,8945123,4123456
+Malaria,2018,Deaths,Number,Both,All ages,India,17823,24567,12456
+Malaria,2018,Incidence,Rate,Both,All ages,India,712.3,1156.2,421.5
+Malaria,2017,Deaths,Number,Both,All ages,India,21456,29876,14567
+Malaria,2015,Deaths,Number,Both,All ages,India,28934,38765,19456
+Malaria,2010,Deaths,Number,Both,All ages,India,46723,62345,31234
+Tuberculosis,2019,Deaths,Number,Both,All ages,India,449345,512678,389234
+Tuberculosis,2019,Incidence,Rate,Both,All ages,India,193.4,221.7,168.2
+Tuberculosis,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,13456789,15234567,11678901
+Tuberculosis,2019,Prevalence,Number,Both,All ages,India,2694560,3012345,2398765
+Tuberculosis,2018,Deaths,Number,Both,All ages,India,467823,534567,404321
+Tuberculosis,2017,Deaths,Number,Both,All ages,India,489234,558976,422345
+Tuberculosis,2015,Deaths,Number,Both,All ages,India,523456,598765,451234
+Tuberculosis,2010,Deaths,Number,Both,All ages,India,612345,698765,528976
+HIV/AIDS,2019,Deaths,Number,Both,All ages,India,69834,82345,58765
+HIV/AIDS,2019,Incidence,Rate,Both,All ages,India,14.2,18.7,10.4
+HIV/AIDS,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,4523456,5234567,3812345
+HIV/AIDS,2019,Prevalence,Number,Both,All ages,India,2345678,2789012,1923456
+HIV/AIDS,2018,Deaths,Number,Both,All ages,India,74567,87654,62345
+HIV/AIDS,2015,Deaths,Number,Both,All ages,India,98765,114567,83456
+HIV/AIDS,2010,Deaths,Number,Both,All ages,India,156789,178934,134567
+Diabetes mellitus,2019,Deaths,Number,Both,All ages,India,254678,298765,213456
+Diabetes mellitus,2019,Prevalence,Rate,Both,All ages,India,8923.4,10234.5,7612.3
+Diabetes mellitus,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,15678901,17890123,13456789
+Diabetes mellitus,2018,Deaths,Number,Both,All ages,India,242345,284567,203456
+Diabetes mellitus,2015,Deaths,Number,Both,All ages,India,198765,234567,167890
+Diabetes mellitus,2010,Deaths,Number,Both,All ages,India,156789,189012,128976
+Diarrheal diseases,2019,Deaths,Number,Both,All ages,India,98765,118976,79876
+Diarrheal diseases,2019,Incidence,Rate,Both,All ages,India,34567.8,42345.6,27890.1
+Diarrheal diseases,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,8765432,10234567,7234567
+Diarrheal diseases,2018,Deaths,Number,Both,All ages,India,104567,125678,84567
+Diarrheal diseases,2015,Deaths,Number,Both,All ages,India,134567,158976,112345
+Diarrheal diseases,2010,Deaths,Number,Both,All ages,India,189012,218765,162345
+Lower respiratory infections,2019,Deaths,Number,Both,All ages,India,345678,398765,295678
+Lower respiratory infections,2019,Incidence,Rate,Both,All ages,India,23456.7,28976.5,18765.4
+Lower respiratory infections,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,18976543,21345678,16789012
+Lower respiratory infections,2018,Deaths,Number,Both,All ages,India,356789,412345,304567
+Lower respiratory infections,2015,Deaths,Number,Both,All ages,India,398765,456789,343456
+Lower respiratory infections,2010,Deaths,Number,Both,All ages,India,467890,534567,404321
+Measles,2019,Deaths,Number,Both,All ages,India,2345,3456,1567
+Measles,2019,Incidence,Rate,Both,All ages,India,12.4,18.6,7.8
+Measles,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,234567,345678,156789
+Measles,2018,Deaths,Number,Both,All ages,India,2678,3891,1789
+Measles,2015,Deaths,Number,Both,All ages,India,8765,12345,5678
+Measles,2010,Deaths,Number,Both,All ages,India,34567,45678,24567
+Hepatitis B,2019,Deaths,Number,Both,All ages,India,67890,78965,57834
+Hepatitis B,2019,Prevalence,Rate,Both,All ages,India,234.5,298.7,178.9
+Hepatitis B,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,3456789,4012345,2912345
+Hepatitis B,2018,Deaths,Number,Both,All ages,India,69234,80123,59456
+Hepatitis C,2019,Deaths,Number,Both,All ages,India,45678,54321,37890
+Hepatitis C,2019,Prevalence,Rate,Both,All ages,India,156.7,198.4,118.9
+Dengue,2019,Deaths,Number,Both,All ages,India,1234,1876,789
+Dengue,2019,Incidence,Rate,Both,All ages,India,345.6,487.3,218.9
+Dengue,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,567890,789012,378901
+Dengue,2018,Deaths,Number,Both,All ages,India,1456,2134,876
+Dengue,2015,Deaths,Number,Both,All ages,India,1789,2567,1123
+Typhoid fever,2019,Deaths,Number,Both,All ages,India,12345,16789,8976
+Typhoid fever,2019,Incidence,Rate,Both,All ages,India,456.7,578.9,345.6
+Typhoid fever,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,1234567,1567890,923456
+Typhoid fever,2018,Deaths,Number,Both,All ages,India,13456,17890,9876
+Ischemic heart disease,2019,Deaths,Number,Both,All ages,India,1567890,1789012,1356789
+Ischemic heart disease,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,34567890,38976543,30234567
+Ischemic heart disease,2018,Deaths,Number,Both,All ages,India,1523456,1745678,1312345
+Stroke,2019,Deaths,Number,Both,All ages,India,698765,789012,612345
+Stroke,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,16789012,18976543,14567890
+Neonatal disorders,2019,Deaths,Number,Both,All ages,India,456789,523456,392345
+Neonatal disorders,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,45678901,51234567,40123456
+Neonatal disorders,2018,Deaths,Number,Both,All ages,India,478901,545678,414567
+Iron-deficiency anemia,2019,Deaths,Number,Both,All ages,India,23456,29876,17890
+Iron-deficiency anemia,2019,Prevalence,Rate,Both,All ages,India,21345.6,24567.8,18234.5
+Iron-deficiency anemia,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,23456789,26789012,20234567
+Influenza,2019,Deaths,Number,Both,All ages,India,34567,42345,27890
+Influenza,2019,Incidence,Rate,Both,All ages,India,5678.9,7234.5,4234.6
+Influenza,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,2345678,2876543,1876543
+Influenza,2018,Deaths,Number,Both,All ages,India,36789,44567,29876
+Influenza,2015,Deaths,Number,Both,All ages,India,42345,51234,34567
+Neoplasms,2019,Deaths,Number,Both,All ages,India,876543,978654,778901
+Neoplasms,2019,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,23456789,26789012,20234567
+Neoplasms,2018,Deaths,Number,Both,All ages,India,856789,956789,760123
+Neoplasms,2015,Deaths,Number,Both,All ages,India,789012,889012,693456
+COVID-19,2021,Deaths,Number,Both,All ages,India,489345,612345,378956
+COVID-19,2021,Incidence,Rate,Both,All ages,India,2456.7,3123.4,1890.2
+COVID-19,2021,DALYs (Disability-Adjusted Life Years),Number,Both,All ages,India,23456789,28976543,18234567
+COVID-19,2020,Deaths,Number,Both,All ages,India,148976,198765,102345
+COVID-19,2020,Incidence,Rate,Both,All ages,India,723.4,956.7,512.3
