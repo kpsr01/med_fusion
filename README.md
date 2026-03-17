@@ -4,6 +4,8 @@
 
 ---
 
+VIDEO LINK: https://youtu.be/0yamAfVAHP0
+
 ## Overview
 
 Tracking disease outbreaks across the globe requires monitoring a fragmented landscape of public health databases, each with its own API format, update cadence, and data model. Epidemiologists and public health analysts must manually query WHO, CDC, ECDC, and other organizations separately, then mentally stitch together the results.
