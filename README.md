@@ -131,7 +131,7 @@ flowchart TD
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd cb_hack
+cd med_fusion
 
 # Install dependencies
 npm install
@@ -304,7 +304,7 @@ curl "http://localhost:3000/api/search?disease=covid&region=india"
 ## Project Structure
 
 ```
-cb_hack/
+med_fusion/
 ├── server/
 │   ├── index.js                        # Express entry point, middleware, static serving
 │   ├── routes/
