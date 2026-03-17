@@ -401,7 +401,3 @@ Each connector has a TTL tuned to its data update frequency:
 | PubChem | 1800s (30 min) | REST API, stable data |
 
 Cache keys follow the format `{connectorName}:{disease}:{region}` and expired entries are checked every 120 seconds.
-
-## License
-
-MIT
