@@ -4,207 +4,196 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Disease Surveillance Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Scan-line overlay for CRT effect -->
-  <div class="scanlines" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb--left" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb--right" aria-hidden="true"></div>
 
-  <header class="header">
-    <div class="header__brand">
-      <div class="header__icon" aria-hidden="true">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <circle cx="14" cy="14" r="12" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"/>
-          <circle cx="14" cy="14" r="5" fill="var(--accent)" opacity="0.6"/>
-          <circle cx="14" cy="14" r="2" fill="var(--accent)"/>
-        </svg>
+  <header class="site-header" id="top">
+    <div class="site-header__top container">
+      <div class="brand">
+        <div class="brand__mark" aria-hidden="true">
+          <span></span>
+        </div>
+        <div>
+          <p class="brand__kicker">Global Health Intelligence</p>
+          <h1 class="brand__title">Disease Surveillance Dashboard</h1>
+        </div>
       </div>
-      <div>
-        <h1 class="header__title">Disease Surveillance Dashboard</h1>
-        <p class="header__subtitle">Real-time multi-source health intelligence</p>
+      <div class="status-cluster">
+        <div class="status-pill status-pill--ok" id="headerStatus" role="status" aria-live="polite">
+          <span class="status-pill__dot" id="statusDot"></span>
+          <span id="statusText">Checking systems...</span>
+        </div>
+        <span class="badge badge--source" id="sourceCountBadge">12 Sources</span>
       </div>
     </div>
-    <div class="header__status" id="headerStatus">
-      <span class="header__status-dot"></span>
-      <span class="header__status-text">Systems Online</span>
+
+    <div class="site-header__controls container">
+      <nav class="tab-nav" aria-label="Dashboard sections">
+        <button class="tab-nav__btn is-active" id="tab-overview" type="button" data-tab="overview" aria-controls="panel-overview" aria-selected="true">Overview</button>
+        <button class="tab-nav__btn" id="tab-epidemiological" type="button" data-tab="epidemiological" aria-controls="panel-epidemiological" aria-selected="false">Epidemiological</button>
+        <button class="tab-nav__btn" id="tab-alerts" type="button" data-tab="alerts" aria-controls="panel-alerts" aria-selected="false">Outbreak Alerts <span class="tab-nav__count" id="alertsCount">0</span></button>
+        <button class="tab-nav__btn" id="tab-classification" type="button" data-tab="classification" aria-controls="panel-classification" aria-selected="false">Classification</button>
+        <button class="tab-nav__btn" id="tab-genomic" type="button" data-tab="genomic" aria-controls="panel-genomic" aria-selected="false">Genomic</button>
+        <button class="tab-nav__btn" id="tab-therapeutics" type="button" data-tab="therapeutics" aria-controls="panel-therapeutics" aria-selected="false">Therapeutics</button>
+      </nav>
+
+      <form class="query-form" id="searchForm" autocomplete="off" aria-label="Disease query form">
+        <label class="sr-only" for="diseaseInput">Disease</label>
+        <input id="diseaseInput" name="disease" type="text" placeholder="Disease or pathogen" required />
+        <label class="sr-only" for="regionInput">Region</label>
+        <input id="regionInput" name="region" type="text" placeholder="Region (optional)" />
+        <button type="submit" class="query-form__submit">Query Sources</button>
+      </form>
+
+      <div class="quick-queries" id="quickQueryHints" aria-label="Quick demo queries">
+        <button type="button" class="quick-queries__chip" data-disease="COVID-19" data-region="India">COVID-19 in India</button>
+        <button type="button" class="quick-queries__chip" data-disease="Malaria" data-region="Africa">Malaria in Africa</button>
+        <button type="button" class="quick-queries__chip" data-disease="Influenza" data-region="United States">Influenza in United States</button>
+        <button type="button" class="quick-queries__chip" data-disease="Tuberculosis" data-region="Global">Tuberculosis (Global)</button>
+        <button type="button" class="quick-queries__chip" data-disease="Dengue" data-region="Brazil">Dengue in Brazil</button>
+      </div>
     </div>
   </header>
 
-  <main class="main">
-    <!-- Search Section -->
-    <section class="search-section">
-      <form class="search-form" id="searchForm" autocomplete="off">
-        <div class="search-form__fields">
-          <div class="search-form__group">
-            <label for="diseaseInput" class="search-form__label">Disease / Pathogen</label>
-            <input
-              type="text"
-              id="diseaseInput"
-              class="search-form__input"
-              placeholder="e.g. covid, malaria, tuberculosis, influenza"
-              required
-            />
+  <main class="dashboard-main container" id="dashboardMain">
+    <section class="panel is-active" id="panel-overview" data-panel="overview" aria-labelledby="tab-overview">
+      <div class="overview-stack">
+        <section class="demo-hero card card--highlight fade-in-up" id="demoHero" data-quick-query-root aria-label="Demo quick queries">
+          <div class="card__header">
+            <h2>Live Demo Command Center</h2>
+            <span class="badge badge--source" id="heroSourceCount">Aggregating data from 12 sources</span>
           </div>
-          <div class="search-form__group">
-            <label for="regionInput" class="search-form__label">Region <span class="search-form__optional">(optional)</span></label>
-            <input
-              type="text"
-              id="regionInput"
-              class="search-form__input"
-              placeholder="e.g. india, united states, uk, brazil"
-            />
+          <div class="card__body">
+            <p class="demo-hero__copy">Launch a full-spectrum surveillance run with one click. Each scenario pulls epidemiological trends, outbreak alerts, ICD mapping, genomic associations, and therapeutic intelligence.</p>
+            <div class="demo-hero__queries">
+              <button type="button" class="quick-queries__chip" data-disease="COVID-19" data-region="India">COVID-19 in India</button>
+              <button type="button" class="quick-queries__chip" data-disease="Malaria" data-region="Africa">Malaria in Africa</button>
+              <button type="button" class="quick-queries__chip" data-disease="Influenza" data-region="United States">Influenza in United States</button>
+              <button type="button" class="quick-queries__chip" data-disease="Tuberculosis" data-region="Global">Tuberculosis (Global)</button>
+              <button type="button" class="quick-queries__chip" data-disease="Dengue" data-region="Brazil">Dengue in Brazil</button>
+            </div>
           </div>
-          <button type="submit" class="search-form__btn" id="searchBtn">
-            <span class="search-form__btn-text">Query Sources</span>
-            <span class="search-form__btn-loading" hidden>
-              <span class="spinner"></span> Scanning...
-            </span>
-          </button>
-        </div>
-        <div class="search-form__hints">
-          <span class="search-form__hint">Try: <button type="button" class="hint-btn" data-disease="covid" data-region="india">covid + india</button></span>
-          <span class="search-form__hint"><button type="button" class="hint-btn" data-disease="malaria" data-region="africa">malaria + africa</button></span>
-          <span class="search-form__hint"><button type="button" class="hint-btn" data-disease="influenza" data-region="united states">influenza + US</button></span>
-          <span class="search-form__hint"><button type="button" class="hint-btn" data-disease="tuberculosis" data-region="">tuberculosis</button></span>
-        </div>
-      </form>
-    </section>
+        </section>
+        <section id="searchFeedback" aria-live="assertive"></section>
+        <section id="queryMeta"></section>
+        <section id="sourceStatus"></section>
+        <section id="overviewCards" class="grid-auto" aria-live="polite"></section>
+        <section id="trendSummary" class="grid-auto" aria-live="polite"></section>
 
-    <!-- Query Meta (shown after search) -->
-    <section class="query-meta" id="queryMeta" hidden>
-      <div class="query-meta__info">
-        <div class="query-meta__item">
-          <span class="query-meta__label">Query</span>
-          <span class="query-meta__value" id="metaQuery">--</span>
-        </div>
-        <div class="query-meta__item">
-          <span class="query-meta__label">Latency</span>
-          <span class="query-meta__value" id="metaLatency">--</span>
-        </div>
-        <div class="query-meta__item">
-          <span class="query-meta__label">Sources</span>
-          <span class="query-meta__value" id="metaSources">--</span>
-        </div>
-        <div class="query-meta__item">
-          <span class="query-meta__label">Cached</span>
-          <span class="query-meta__value" id="metaCached">--</span>
-        </div>
+        <article class="card card--highlight fade-in-up" id="overviewEmptyState">
+          <div class="card__header">
+            <h2>Surveillance Ready</h2>
+            <span class="badge badge--cached">Awaiting Query</span>
+          </div>
+          <div class="card__body">
+            <p>Run a disease query to activate live aggregation across epidemiological, outbreak, classification, genomic, and therapeutics sources.</p>
+          </div>
+          <div class="card__footer">
+            <span>Tip: Start with a quick demo query above</span>
+          </div>
+        </article>
       </div>
     </section>
 
-    <!-- Source Status Bar -->
-    <section class="source-bar" id="sourceBar" hidden>
-      <h2 class="source-bar__title">Source Status</h2>
-      <div class="source-bar__grid" id="sourceStatusGrid"></div>
-    </section>
-
-    <!-- Loading State -->
-    <section class="loading-section" id="loadingSection" hidden>
-      <div class="loading-section__content">
-        <div class="loading-pulse"></div>
-        <p class="loading-section__text">Querying <span id="loadingCount">12</span> data sources...</p>
-        <p class="loading-section__sub">Aggregating results from WHO, CDC, ECDC, and more</p>
+    <section class="panel" id="panel-epidemiological" data-panel="epidemiological" hidden>
+      <div class="epidemiological-stack">
+        <section id="geoMapPanel" aria-live="polite"></section>
+        <section id="trendCharts" aria-live="polite"></section>
+        <section id="countryCompare" aria-live="polite"></section>
+        <section id="epidemiologicalCards" class="grid-auto" aria-live="polite"></section>
       </div>
     </section>
 
-    <!-- Error State -->
-    <section class="error-section" id="errorSection" hidden>
-      <div class="error-section__content">
-        <div class="error-section__icon">!</div>
-        <h3 class="error-section__title" id="errorTitle">Search Failed</h3>
-        <p class="error-section__message" id="errorMessage">An unexpected error occurred.</p>
-        <button class="error-section__btn" id="errorRetryBtn">Retry Query</button>
+    <section class="panel" id="panel-alerts" data-panel="alerts" hidden>
+      <div class="alerts-stack">
+        <section id="outbreakTimeline" aria-live="polite"></section>
+        <section id="alertFeed" aria-live="polite"></section>
       </div>
     </section>
 
-    <!-- Results Section -->
-    <section class="results-section" id="resultsSection" hidden>
-      <!-- Classification Card -->
-      <div class="results-block" id="classificationBlock" hidden>
-        <h2 class="results-block__title">
-          <span class="results-block__icon">&#9763;</span> Disease Classification
-        </h2>
-        <div class="classification-card" id="classificationContent"></div>
-      </div>
+    <section class="panel" id="panel-classification" data-panel="classification" hidden>
+      <section id="classificationPanel" aria-live="polite"></section>
+    </section>
 
-      <!-- Epidemiological Data -->
-      <div class="results-block" id="epiBlock" hidden>
-        <h2 class="results-block__title">
-          <span class="results-block__icon">&#9762;</span> Epidemiological Data
-        </h2>
-        <div class="results-grid" id="epiGrid"></div>
-      </div>
-
-      <!-- Trend Chart -->
-      <div class="results-block" id="trendChartBlock" hidden>
-        <h2 class="results-block__title">
-          <span class="results-block__icon">&#9636;</span> Trend Analysis
-        </h2>
-        <div class="chart-container">
-          <canvas id="trendChart"></canvas>
-        </div>
-      </div>
-
-      <!-- Trend Analysis Summary -->
-      <div class="results-block" id="trendAnalysisBlock" hidden>
-        <h2 class="results-block__title">
-          <span class="results-block__icon">&#8593;</span> Trend Computation
-        </h2>
-        <div class="results-grid" id="trendAnalysisGrid"></div>
-      </div>
-
-      <!-- Outbreak Alerts -->
-      <div class="results-block" id="alertsBlock" hidden>
-        <h2 class="results-block__title">
-          <span class="results-block__icon">&#9888;</span> Outbreak Alerts
-        </h2>
-        <div class="alerts-list" id="alertsList"></div>
-      </div>
-
-      <!-- Genomic Associations -->
-      <div class="results-block" id="genomicBlock" hidden>
-        <h2 class="results-block__title">
-          <span class="results-block__icon">&#9879;</span> Genomic Associations
-        </h2>
-        <div class="results-grid" id="genomicGrid"></div>
-      </div>
-
-      <!-- Therapeutics -->
-      <div class="results-block" id="therapeuticsBlock" hidden>
-        <h2 class="results-block__title">
-          <span class="results-block__icon">&#9883;</span> Therapeutics &amp; Compounds
-        </h2>
-        <div class="results-grid" id="therapeuticsGrid"></div>
+    <section class="panel" id="panel-genomic" data-panel="genomic" hidden>
+      <div class="genomic-stack">
+        <section id="networkGraph" aria-live="polite"></section>
+        <section id="genomicCards" class="grid-auto" aria-live="polite"></section>
       </div>
     </section>
 
-    <!-- Initial State / Empty -->
-    <section class="empty-state" id="emptyState">
-      <div class="empty-state__content">
-        <div class="empty-state__graphic" aria-hidden="true">
-          <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-            <circle cx="60" cy="60" r="55" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="6 4"/>
-            <circle cx="60" cy="60" r="35" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>
-            <circle cx="60" cy="60" r="15" stroke="var(--accent)" stroke-width="1.5" opacity="0.4"/>
-            <line x1="60" y1="5" x2="60" y2="115" stroke="var(--border)" stroke-width="0.5" opacity="0.3"/>
-            <line x1="5" y1="60" x2="115" y2="60" stroke="var(--border)" stroke-width="0.5" opacity="0.3"/>
-          </svg>
-        </div>
-        <h2 class="empty-state__title">Awaiting Query</h2>
-        <p class="empty-state__text">Enter a disease name above to scan 12 global health data sources</p>
-      </div>
+    <section class="panel" id="panel-therapeutics" data-panel="therapeutics" hidden>
+      <section id="therapeuticCards" class="grid-auto" aria-live="polite"></section>
     </section>
   </main>
 
-  <footer class="footer">
-    <p>Disease Surveillance Dashboard &mdash; Aggregating 9 surveillance + 3 enrichment sources</p>
-    <p class="footer__sub">Data from WHO, CDC, ECDC, UKHSA, Disease.sh, HealthMap, ProMED, IHME, Open Targets, PubChem</p>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__head">
+        <p class="site-footer__title">Source Attribution</p>
+        <button type="button" class="chart-toggle" id="aboutSourcesBtn" aria-haspopup="dialog" aria-controls="aboutSourcesModal">About Sources</button>
+      </div>
+      <div class="source-strip" id="footerSources">
+        <a class="badge badge--source" href="https://disease.sh" target="_blank" rel="noopener noreferrer">Disease.sh</a>
+        <a class="badge badge--source" href="https://www.who.int/data/gho" target="_blank" rel="noopener noreferrer">WHO GHO</a>
+        <a class="badge badge--source" href="https://data.cdc.gov" target="_blank" rel="noopener noreferrer">CDC Open Data</a>
+        <a class="badge badge--source" href="https://www.cdc.gov/flu/weekly" target="_blank" rel="noopener noreferrer">CDC FluView</a>
+        <a class="badge badge--source" href="https://www.healthmap.org" target="_blank" rel="noopener noreferrer">HealthMap</a>
+        <a class="badge badge--source" href="https://promedmail.org" target="_blank" rel="noopener noreferrer">ProMED Mail</a>
+        <a class="badge badge--source" href="https://ghdx.healthdata.org" target="_blank" rel="noopener noreferrer">IHME GHDx</a>
+        <a class="badge badge--source" href="https://www.ecdc.europa.eu" target="_blank" rel="noopener noreferrer">ECDC</a>
+        <a class="badge badge--source" href="https://www.gov.uk/government/organisations/uk-health-security-agency" target="_blank" rel="noopener noreferrer">UKHSA</a>
+        <a class="badge badge--source" href="https://platform.opentargets.org" target="_blank" rel="noopener noreferrer">Open Targets</a>
+        <a class="badge badge--source" href="https://pubchem.ncbi.nlm.nih.gov" target="_blank" rel="noopener noreferrer">PubChem</a>
+        <a class="badge badge--source" href="https://icd.who.int" target="_blank" rel="noopener noreferrer">ICD Mapping</a>
+      </div>
+    </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <div class="modal-backdrop" id="aboutSourcesModal" hidden aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="aboutSourcesTitle">
+      <header class="modal__header">
+        <h2 id="aboutSourcesTitle">Data Source Registry</h2>
+        <button type="button" class="chart-toggle" id="closeSourcesModal" aria-label="Close source details">Close</button>
+      </header>
+      <div class="modal__body" id="aboutSourcesContent"></div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="https://unpkg.com/vis-network@9.1.9/dist/vis-network.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/sourceStatus.js"></script>
+  <script src="js/overview.js"></script>
+  <script src="js/trendSummary.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/mapChoropleth.js"></script>
+  <script src="js/mapAlerts.js"></script>
+  <script src="js/trendCharts.js"></script>
+  <script src="js/countryCompare.js"></script>
+  <script src="js/epiCards.js"></script>
+  <script src="js/alertFeed.js"></script>
+  <script src="js/outbreakTimeline.js"></script>
+  <script src="js/classification.js"></script>
+  <script src="js/genomicCards.js"></script>
+  <script src="js/therapeuticCards.js"></script>
+  <script src="js/networkGraph.js"></script>
+  <script src="js/attribution.js"></script>
+  <script src="js/tooltips.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
