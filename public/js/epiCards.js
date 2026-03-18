@@ -65,10 +65,11 @@
       ? `${window.Utils.formatNumber(statusEntry.latency)} ms`
       : '--';
     const updated = payloadTimestamp ? window.Utils.timeAgo(payloadTimestamp) : '--';
+    const titleStyle = sourceName === 'CDC Open Data' ? ' style="font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"' : '';
 
     return `
       <div class="card__header epi-card__header">
-        <h2>${window.Utils.escapeHTML(sourceName)}</h2>
+        <h2${titleStyle}>${window.Utils.escapeHTML(sourceName)}</h2>
         <span class="badge badge--source epi-source-badge" style="border-color:${color};box-shadow:inset 0 0 0 1px ${color}55;">
           <span class="epi-source-badge__icon" style="background:${color}">${window.Utils.escapeHTML(sourceIconLabel(sourceName))}</span>
           ${window.Utils.escapeHTML(sourceName)}
