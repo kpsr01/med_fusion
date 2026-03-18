@@ -38,6 +38,8 @@ body {
 
 body {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   font-family: var(--font-body);
   font-size: var(--text-body);
   color: var(--text-primary);
@@ -345,6 +347,7 @@ body::before {
 }
 
 .dashboard-main {
+  flex: 1;
   padding: 1.4rem 0 1.6rem;
 }
 
