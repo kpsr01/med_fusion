@@ -1956,3 +1956,46 @@ body::before {
     grid-template-columns: 1fr;
   }
 }
+
+/* Additional Mobile Responsiveness Fixes */
+@media (max-width: 768px) {
+  .card__header,
+  .card__footer,
+  .meta-banner,
+  .modal__header {
+    padding: 0.6rem 0.7rem;
+  }
+  
+  .card__body,
+  .modal__body,
+  .meta-banner {
+    padding: 0.7rem;
+  }
+
+  .epi-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .meta-banner__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .chart-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .chart-toolbar__group {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .map-legend, 
+  .map-hover {
+    max-width: calc(100vw - 2rem);
+    font-size: 0.7rem;
+  }
+}

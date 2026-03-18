@@ -142,12 +142,15 @@ function aggregateResults(connectorResults) {
 
       case 'outbreakAlerts':
         if (result.data) {
-          // Outbreak sources return arrays of alerts; flatten into one list
+          // Outbreak sources may return { alerts: [...] }, { posts: [...] },
+          // or a direct array. Flatten to concrete alert rows only.
           const alerts = Array.isArray(result.data.alerts)
             ? result.data.alerts
-            : Array.isArray(result.data)
-              ? result.data
-              : [result.data];
+            : Array.isArray(result.data.posts)
+              ? result.data.posts
+              : Array.isArray(result.data)
+                ? result.data
+                : [];
           aggregated.outbreakAlerts.push(
             ...alerts.map((alert) => ({
               source: result.name,
