@@ -54,6 +54,39 @@ async function fetchData({ disease, region }) {
     results.global = { error: err.message };
   }
 
+  // Fetch all-country snapshot for choropleth and comparison views
+  try {
+    const countriesRes = await axios.get(`${BASE_URL}/countries`, { timeout: 10000 });
+    results.countries = Array.isArray(countriesRes.data)
+      ? countriesRes.data.map((item) => ({
+          country: item.country,
+          countryInfo: item.countryInfo
+            ? {
+                iso2: item.countryInfo.iso2,
+                iso3: item.countryInfo.iso3,
+                lat: item.countryInfo.lat,
+                long: item.countryInfo.long,
+              }
+            : null,
+          cases: item.cases,
+          todayCases: item.todayCases,
+          deaths: item.deaths,
+          todayDeaths: item.todayDeaths,
+          recovered: item.recovered,
+          active: item.active,
+          critical: item.critical,
+          casesPerOneMillion: item.casesPerOneMillion,
+          deathsPerOneMillion: item.deathsPerOneMillion,
+          tests: item.tests,
+          population: item.population,
+          updated: item.updated,
+        }))
+      : [];
+  } catch (err) {
+    results.countries = [];
+    results.countriesError = err.message;
+  }
+
   // Fetch country-specific data if region is provided
   if (region && region !== 'global') {
     try {
